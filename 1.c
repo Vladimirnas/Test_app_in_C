@@ -60,42 +60,55 @@ void update_ball() {
     int next_x = ball_x + ball_dx;
     int next_y = ball_y + ball_dy;
 
+    // Столкновение с верхом или низом поля
     if (next_y < 0 || next_y >= height) {
-        ball_dy *= -1;
-        return;
+        ball_dy = (ball_dy == 0) ? 1 : -ball_dy;  // если мяч шёл прямо — задаём Y, иначе отражаем
+        next_y = ball_y + ball_dy;
     }
 
+    // Столкновение с левой ракеткой
     if (next_x == 1 && next_y >= left_paddle_y && next_y < left_paddle_y + paddle_size) {
         ball_dx *= -1;
-        return;
+        if (ball_dy == 0) {
+            // задаём угол: вверх, если попал в верхнюю часть ракетки, иначе вниз
+            ball_dy = (ball_y < left_paddle_y + paddle_size / 2) ? -1 : 1;
+        }
     }
 
-    if (next_x == width - 2 && next_y >= right_paddle_y && next_y < right_paddle_y + paddle_size) {
+    // Столкновение с правой ракеткой
+    else if (next_x == width - 2 && next_y >= right_paddle_y && next_y < right_paddle_y + paddle_size) {
         ball_dx *= -1;
-        return;
+        if (ball_dy == 0) {
+            ball_dy = (ball_y < right_paddle_y + paddle_size / 2) ? -1 : 1;
+        }
     }
 
-    if (next_x < 0) {
+    // Гол влево
+    else if (next_x < 0) {
         ++score_right;
         ball_x = width / 2;
         ball_y = height / 2;
         ball_dx = 1;
-        ball_dy = 1;
+        ball_dy = 0; // снова по прямой
         return;
     }
 
-    if (next_x >= width) {
+    // Гол вправо
+    else if (next_x >= width) {
         ++score_left;
         ball_x = width / 2;
         ball_y = height / 2;
         ball_dx = -1;
-        ball_dy = -1;
+        ball_dy = 0; // снова по прямой
         return;
     }
 
+    // Обновить координаты мяча
     ball_x += ball_dx;
     ball_y += ball_dy;
 }
+
+
 
 void game_loop() {
     char input;
@@ -103,7 +116,7 @@ void game_loop() {
     ball_x = width / 2;
     ball_y = height / 2;
     ball_dx = 1;
-    ball_dy = 1;
+    ball_dy = 0;
     left_paddle_y = height / 2 - paddle_size / 2;
     right_paddle_y = height / 2 - paddle_size / 2;
 
