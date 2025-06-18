@@ -7,8 +7,9 @@ SRC_TEST = s21_string_test.c
 TARGET_STRLEN = $(BUILD_DIR)/Quest_1
 TARGET_STRCMP = $(BUILD_DIR)/Quest_2
 TARGET_STRCPY = $(BUILD_DIR)/Quest_3
+TARGET_STRCAT = $(BUILD_DIR)/Quest_4
 
-all: strlen_tests strcmp_tests strcpy_tests
+all: strlen_tests strcmp_tests strcpy_tests strcat_tests
 
 strlen_tests: $(SRC_IMPL) $(SRC_TEST)
 	mkdir -p $(BUILD_DIR)
@@ -21,6 +22,10 @@ strcmp_tests: $(SRC_IMPL) $(SRC_TEST)
 strcpy_tests: $(SRC_IMPL) $(SRC_TEST)
 	mkdir -p $(BUILD_DIR)
 	$(CC) $(CFLAGS) -DSTRCPY_TESTS -o $(TARGET_STRCPY) $(SRC_IMPL) $(SRC_TEST)
+
+strcat_tests: $(SRC_IMPL) $(SRC_TEST)
+	mkdir -p $(BUILD_DIR)
+	$(CC) $(CFLAGS) -DSTRCAT_TESTS -o $(TARGET_STRCAT) $(SRC_IMPL) $(SRC_TEST)
 
 clean:
 	rm -rf $(BUILD_DIR)

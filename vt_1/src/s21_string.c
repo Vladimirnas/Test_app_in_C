@@ -39,3 +39,20 @@ char *s21_strcpy(char *dest, const char *src) {
 }
 
 
+char *s21_strcat(char *destination, const char *append) {
+    if (!destination || !append) return destination;
+
+    int dest_len = 0;
+    while (destination[dest_len] != '\0') {
+        dest_len++;
+    }
+
+    int i = 0;
+    while (append[i] != '\0') {
+        destination[dest_len + i] = append[i];
+        i++;
+    }
+
+    destination[dest_len + i] = '\0';
+    return destination;
+}
