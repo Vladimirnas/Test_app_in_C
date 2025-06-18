@@ -1,1 +1,0 @@
-# Test_app_in_C
