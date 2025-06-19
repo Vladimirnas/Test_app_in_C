@@ -1,31 +1,33 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -std=c11
-BUILD_DIR = ../build
-SRC_IMPL = s21_string.c
-SRC_TEST = s21_string_test.c
+BUILD = ../build
 
-TARGET_STRLEN = $(BUILD_DIR)/Quest_1
-TARGET_STRCMP = $(BUILD_DIR)/Quest_2
-TARGET_STRCPY = $(BUILD_DIR)/Quest_3
-TARGET_STRCAT = $(BUILD_DIR)/Quest_4
+DOOR_EXEC = $(BUILD)/Quest_1
+LIST_EXEC = $(BUILD)/Quest_2
+STACK_EXEC = $(BUILD)/Quest_3
 
-all: strlen_tests strcmp_tests strcpy_tests strcat_tests
+DOOR_SRC = dmanager_module.c
+DOOR_HEADERS = door_struct.h
 
-strlen_tests: $(SRC_IMPL) $(SRC_TEST)
-	mkdir -p $(BUILD_DIR)
-	$(CC) $(CFLAGS) -DSTRLEN_TESTS -o $(TARGET_STRLEN) $(SRC_IMPL) $(SRC_TEST)
+LIST_SRC = list.c list_test.c
+LIST_HEADERS = list.h door_struct.h
 
-strcmp_tests: $(SRC_IMPL) $(SRC_TEST)
-	mkdir -p $(BUILD_DIR)
-	$(CC) $(CFLAGS) -DSTRCMP_TESTS -o $(TARGET_STRCMP) $(SRC_IMPL) $(SRC_TEST)
+STACK_SRC = stack.c stack_test.c
+STACK_HEADERS = stack.h
 
-strcpy_tests: $(SRC_IMPL) $(SRC_TEST)
-	mkdir -p $(BUILD_DIR)
-	$(CC) $(CFLAGS) -DSTRCPY_TESTS -o $(TARGET_STRCPY) $(SRC_IMPL) $(SRC_TEST)
+all: door_struct list_test stack_test
 
-strcat_tests: $(SRC_IMPL) $(SRC_TEST)
-	mkdir -p $(BUILD_DIR)
-	$(CC) $(CFLAGS) -DSTRCAT_TESTS -o $(TARGET_STRCAT) $(SRC_IMPL) $(SRC_TEST)
+door_struct: $(DOOR_SRC) $(DOOR_HEADERS)
+	@mkdir -p $(BUILD)
+	$(CC) $(CFLAGS) -o $(DOOR_EXEC) $(DOOR_SRC)
+
+list_test: $(LIST_SRC) $(LIST_HEADERS)
+	@mkdir -p $(BUILD)
+	$(CC) $(CFLAGS) -o $(LIST_EXEC) $(LIST_SRC)
+
+stack_test: $(STACK_SRC) $(STACK_HEADERS)
+	@mkdir -p $(BUILD)
+	$(CC) $(CFLAGS) -o $(STACK_EXEC) $(STACK_SRC)
 
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf $(BUILD)
